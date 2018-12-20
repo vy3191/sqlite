@@ -9,10 +9,22 @@ server.use(express.json());
 
 
 server.get('/crayons', (req,res) => {
-          console.log('working now!!!')
+      db('crayons').then( rows => {
+          res.json(rows);
+      }).catch(err => {
+          res.status(500).json({err: 'Could not get crayons'});
+      })
 });
 
 server.get('/crayons/:id', (req,res) => {
+    const {id} = req.params;
+    db('crayons').where('id', id)
+         .then(response => {
+             console.log(response);
+             res.json(response);
+         }).catch( err => {
+             res.status(500).json({err: "Could not get your crayons with the given id"});
+         })
 
 });
 
