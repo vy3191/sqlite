@@ -40,13 +40,28 @@ server.post('/crayons', (req,res) => {
       });
 });
 
+//Update crayons, SET perc_used = .75
 server.put('/crayons/:id', (req,res) => {
-
+      const {id} = req.params;
+      const crayon = req.body;
+      db('crayons').where('id', id).update(crayon)
+         .then( rowCount => {
+             res.status(200).json(rowCount)
+         })
+         .catch(err => {
+             res.status(500).json({err: 'Failed to update crayon'});
+     })
 });
 
 
 server.delete('/crayons/:id', (req,res) => {
-
+      const {id} = req.params;
+      db('crayons').where('id', id).del()
+             .then(rowCount => {
+                 res.status(200).json({"Message": "Deleted successfully"});
+             }).catch(err => {
+                 json.status(500).json({err: 'Failed to deleted this crayon'});
+             })
 });
 
 
